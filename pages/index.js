@@ -2,6 +2,7 @@ import { useState } from "react";
 import { listFiles } from "../utils/drive";
 
 export default function Home(props) {
+  // console.log(props);
   const [items, setItems] = useState(props.files);
   const [isLoading, setIsLoading] = useState(false);
   const [pageToken, setPageToken] = useState(props.nextPageToken);
@@ -15,7 +16,7 @@ export default function Home(props) {
       body: JSON.stringify(token),
     });
     const data = await res.json();
-    setItems(data.result.files);
+    setItems([...items, ...data.result.files]);
     setPageToken(data.result.nextPageToken);
     setIsLoading(false);
   };
@@ -33,14 +34,23 @@ export default function Home(props) {
             </li>
           ))}
       </ul>
-      <button onClick={() => handleClick(pageToken)}>next</button>
+      <button
+        disabled={isLoading || !pageToken}
+        onClick={() => handleClick(pageToken)}
+      >
+        load more
+      </button>
       <p>{pageToken}</p>
     </div>
   );
 }
 
 export async function getStaticProps() {
-  const { files, nextPageToken } = await listFiles(10);
+  const { files, nextPageToken } = await listFiles(100);
+
+  // const result = await fetch("http://localhost:3000/api/drive");
+  // const data = await result.json();
+  // console.log(data);
 
   return {
     props: {

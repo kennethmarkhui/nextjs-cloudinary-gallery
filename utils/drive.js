@@ -19,6 +19,7 @@ export const listFiles = async (pageSize, nextPageToken) => {
       pageToken: nextPageToken,
       pageSize: pageSize,
       fields: "nextPageToken, files(name, mimeType)",
+      orderBy: "name_natural",
     });
     // console.log(res.data.nextPageToken);
   } catch (error) {
