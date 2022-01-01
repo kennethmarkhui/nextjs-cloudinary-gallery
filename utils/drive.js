@@ -16,11 +16,11 @@ export const listFiles = async (pageSize, nextPageToken) => {
     res = await drive.files.list({
       orderBy: "name",
       q: `'${process.env.DRIVE_FOLDER}' in parents`,
-      pageToken: nextPageToken || "",
+      pageToken: nextPageToken,
       pageSize: pageSize,
       fields: "nextPageToken, files(name, mimeType)",
     });
-    // console.log(res);
+    // console.log(res.data.nextPageToken);
   } catch (error) {
     console.log(error.message);
   }
