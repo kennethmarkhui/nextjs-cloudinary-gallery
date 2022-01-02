@@ -10,7 +10,7 @@ oauth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
 
 const drive = google.drive({ version: "v3", auth: oauth2Client });
 
-export const listFiles = async (pageSize, nextPageToken) => {
+export const getImages = async (pageSize, nextPageToken) => {
   let res;
   try {
     res = await drive.files.list({
@@ -18,13 +18,38 @@ export const listFiles = async (pageSize, nextPageToken) => {
       q: `'${process.env.DRIVE_FOLDER}' in parents`,
       pageToken: nextPageToken,
       pageSize: pageSize,
-      fields: "nextPageToken, files(name, mimeType)",
+      fields: "nextPageToken, files(id, name, mimeType)",
+      // fields: "nextPageToken, files(*)",
       orderBy: "name_natural",
     });
     // console.log(res.data.nextPageToken);
   } catch (error) {
     console.log(error.message);
   }
+
+  // console.log(res.data.files);
+  return {
+    ...res.data,
+  };
+};
+
+export const getImage = async (pageSize, nextPageToken, text) => {
+  let res;
+  try {
+    res = await drive.files.list({
+      orderBy: "name",
+      q: `'${process.env.DRIVE_FOLDER}' in parents and name contains '${text}'`,
+      pageToken: nextPageToken,
+      pageSize: pageSize,
+      fields: "nextPageToken, files(id, name, mimeType)",
+      // fields: "nextPageToken, files(*)",
+      orderBy: "name_natural",
+    });
+    // console.log(res.data.nextPageToken);
+  } catch (error) {
+    console.log(error.message);
+  }
+
   return {
     ...res.data,
   };
