@@ -1,31 +1,16 @@
-import { useState } from "react";
 import Image from "next/image";
 
 const ImageList = (props) => {
-  const { files, nextPageToken } = props;
+  const { files, nextPageToken, isLoading, onLoadMore } = props;
 
-  const [items, setItems] = useState(files);
-  const [isLoading, setIsLoading] = useState(false);
-  const [pageToken, setPageToken] = useState(nextPageToken);
-
-  const handleClick = async (token) => {
-    // console.log(token);
-    setIsLoading(true);
-    const res = await fetch("/api/drive", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(token),
-    });
-    const data = await res.json();
-    setItems([...items, ...data.result.files]);
-    setPageToken(data.result.nextPageToken);
-    setIsLoading(false);
+  const handleClick = () => {
+    onLoadMore(nextPageToken);
   };
 
   return (
     <>
       <ul>
-        {items.map((item) => (
+        {files.map((item) => (
           <li key={item.id}>
             {item.name} - {item.mimeType}
             <p>https://drive.google.com/uc?id={item.id}</p>
@@ -40,13 +25,10 @@ const ImageList = (props) => {
         ))}
       </ul>
       {isLoading && <p>loading...</p>}
-      <button
-        disabled={isLoading || !pageToken}
-        onClick={() => handleClick(pageToken)}
-      >
+      <button disabled={isLoading || !nextPageToken} onClick={handleClick}>
         load more
       </button>
-      <p>{pageToken}</p>
+      <p>{nextPageToken}</p>
     </>
   );
 };
