@@ -33,7 +33,7 @@ export const getImages = async (pageSize, nextPageToken) => {
   };
 };
 
-export const getImage = async (pageSize, nextPageToken, text) => {
+export const getImage = async (pageSize, text, nextPageToken) => {
   let res;
   try {
     res = await drive.files.list({

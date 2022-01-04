@@ -1,17 +1,21 @@
 import { useRef } from "react";
 
 const ImageSearch = (props) => {
-  const nameRef = useRef();
+  const { onSearch } = props;
 
-  const handleClick = (e) => {
+  const searchRef = useRef();
+
+  const handleClick = async (e) => {
     e.preventDefault();
-    props.onSearch(nameRef.current.value);
+    if (searchRef.current.value !== "") {
+      onSearch(searchRef.current.value);
+    }
   };
 
   return (
     <form onSubmit={handleClick}>
       <label htmlFor="name" />
-      <input type="text" id="name" ref={nameRef} />
+      <input type="text" id="name" ref={searchRef} placeholder="search" />
       <button>search</button>
     </form>
   );

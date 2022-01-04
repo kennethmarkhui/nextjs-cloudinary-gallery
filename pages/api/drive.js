@@ -1,10 +1,9 @@
-import {
-  getImages,
-  // getImage
-} from "../../utils/drive";
+import { getImages, getImage } from "../../utils/drive";
 
 export default async function handler(req, res) {
-  const pageSize = 1;
+  console.log(req.query);
+  const pageSize = 5;
+
   // POST
   if (req.method === "POST") {
     const token = req.body;
@@ -13,7 +12,11 @@ export default async function handler(req, res) {
   }
 
   // GET search images
-  // const result = await getImage(pageSize, undefined, "1");
+  if (req.query.search) {
+    const { search } = req.query;
+    const result = await getImage(pageSize, search);
+    return res.status(200).json({ message: "search GET success", result });
+  }
 
-  res.status(200).json({ message: "GET api" });
+  res.status(200).json({ message: "default GET endpoint" });
 }
