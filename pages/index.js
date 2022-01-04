@@ -40,11 +40,7 @@ export default function Home(props) {
   const loadMoreHandler = async (token) => {
     // console.log(token);
     if (!!router.query) {
-      const res = await fetch("/api/drive", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(token),
-      });
+      const res = await fetch(`/api/drive?token=${token}`);
       const data = await res.json();
       // console.log(data);
       setItems([...items, ...data.result.files]);
