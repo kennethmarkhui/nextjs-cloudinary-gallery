@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ImageList from "../components/Image/ImageList";
 import ImageSearch from "../components/Image/ImageSearch";
-import { getImages } from "../utils/drive";
+import { getAllImages } from "../utils/drive";
 
 export default function Home(props) {
   // console.log(props);
@@ -39,7 +39,7 @@ export default function Home(props) {
 
   const loadMoreHandler = async (token) => {
     // console.log(token);
-    if (!!router.query) {
+    if (!router.query.search) {
       const res = await fetch(`/api/drive?token=${token}`);
       const data = await res.json();
       // console.log(data);
@@ -48,10 +48,10 @@ export default function Home(props) {
       return;
     }
 
-    const res = await fetch(`/api/drive${router.asPath}`);
+    const res = await fetch(`/api/drive${router.asPath}&token=${token}`);
     const data = await res.json();
-    console.log(data);
-    setItems(data.result.files);
+    // console.log(data);
+    setItems([...items, ...data.result.files]);
     setPageToken(data.result.nextPageToken);
   };
 
@@ -76,7 +76,7 @@ export default function Home(props) {
 }
 
 export async function getStaticProps() {
-  const { files, nextPageToken } = await getImages(5);
+  const { files, nextPageToken } = await getAllImages(5);
 
   return {
     props: {

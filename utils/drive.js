@@ -10,7 +10,7 @@ oauth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
 
 const drive = google.drive({ version: "v3", auth: oauth2Client });
 
-export const getImages = async (pageSize, nextPageToken) => {
+export const getAllImages = async (pageSize, nextPageToken) => {
   let res;
   try {
     res = await drive.files.list({
@@ -33,7 +33,7 @@ export const getImages = async (pageSize, nextPageToken) => {
   };
 };
 
-export const getImage = async (pageSize, text, nextPageToken) => {
+export const getImagesByName = async (pageSize, text, nextPageToken) => {
   let res;
   try {
     res = await drive.files.list({
