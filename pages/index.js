@@ -20,7 +20,7 @@ export default function Home(props) {
     const fetchData = async () => {
       const res = await fetch(`/api/drive${router.asPath}`);
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
       setItems(data.result.files);
       setPageToken(data.result.nextPageToken);
     };
@@ -57,7 +57,7 @@ export default function Home(props) {
 
   return (
     <>
-      <ImageSearch onSearch={searchHandler} />
+      <ImageSearch onSearch={searchHandler} query={router.query.search} />
       <InfiniteScroll
         dataLength={items.length}
         next={() => loadMoreHandler(pageToken)}
@@ -75,7 +75,7 @@ export default function Home(props) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const { files, nextPageToken } = await getAllImages(5);
 
   return {

@@ -7,15 +7,27 @@ export default async function handler(req, res) {
   // GET '/' with nextPageToken
   if (req.query.token && !req.query.search) {
     console.log("not search");
-    const result = await getAllImages(pageSize, req.query.token);
-    return res.status(200).json({ message: "POST success", result });
+    let result;
+    try {
+      result = await getAllImages(pageSize, req.query.token);
+    } catch (error) {
+      res.status(500).json({ message: "Getting nextpages failed!" });
+      return;
+    }
+    return res.status(200).json({ message: "nextPage GET success", result });
   }
 
   // GET search images
   if (req.query.search) {
     const { search, token } = req.query;
     console.log("search");
-    const result = await getImagesByName(pageSize, search, token);
+    let result;
+    try {
+      result = await getImagesByName(pageSize, search, token);
+    } catch (error) {
+      res.status(500).json({ message: "Searching data failed!" });
+      return;
+    }
     return res.status(200).json({ message: "search GET success", result });
   }
 

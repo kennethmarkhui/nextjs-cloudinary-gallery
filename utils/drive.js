@@ -22,9 +22,11 @@ export const getAllImages = async (pageSize, nextPageToken) => {
       // fields: "nextPageToken, files(*)",
       orderBy: "name_natural",
     });
-    // console.log(res.data.nextPageToken);
   } catch (error) {
-    console.log(error.message);
+    console.log(
+      "[utils/drive getAllImages] " + error.name + ": " + error.message
+    );
+    return;
   }
 
   // console.log(res.data.files);
@@ -47,7 +49,10 @@ export const getImagesByName = async (pageSize, text, nextPageToken) => {
     });
     // console.log(res.data.nextPageToken);
   } catch (error) {
-    console.log(error.message);
+    console.log(
+      "[utils/drive getImagesByName] " + error.name + ": " + error.message
+    );
+    return;
   }
 
   return {
