@@ -15,7 +15,7 @@ export const getAllImages = async (pageSize, nextPageToken) => {
   try {
     res = await drive.files.list({
       orderBy: "name",
-      q: `'${process.env.DRIVE_FOLDER}' in parents`,
+      q: `'${process.env.DRIVE_FOLDER}' in parents and mimeType contains 'image/'`,
       pageToken: nextPageToken,
       pageSize: pageSize,
       fields: "nextPageToken, files(id, name, mimeType)",
@@ -40,7 +40,7 @@ export const getImagesByName = async (pageSize, text, nextPageToken) => {
   try {
     res = await drive.files.list({
       orderBy: "name",
-      q: `'${process.env.DRIVE_FOLDER}' in parents and name contains '${text}'`,
+      q: `'${process.env.DRIVE_FOLDER}' in parents and name contains '${text}' and mimeType contains 'image/'`,
       pageToken: nextPageToken,
       pageSize: pageSize,
       fields: "nextPageToken, files(id, name, mimeType)",
