@@ -39,16 +39,14 @@ export default function Home(props) {
 
   const loadMoreHandler = async (token) => {
     // console.log(token);
-    if (!router.query.search) {
-      const res = await fetch(`/api/drive?token=${token}`);
-      const data = await res.json();
-      // console.log(data);
-      setItems([...items, ...data.result.files]);
-      setPageToken(data.result.nextPageToken);
-      return;
-    }
 
-    const res = await fetch(`/api/drive${router.asPath}&token=${token}`);
+    const res = await fetch(
+      `/api/drive${
+        router.asPath !== "/"
+          ? `${router.asPath}&token=${token}`
+          : `/?token=${token}`
+      }`
+    );
     const data = await res.json();
     // console.log(data);
     setItems([...items, ...data.result.files]);
