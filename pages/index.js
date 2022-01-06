@@ -2,7 +2,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ImageList from "../components/Image/ImageList";
-import ImageSearch from "../components/Image/ImageSearch";
+import SearchBar from "../components/UI/SearchBar";
+import Filter from "../components/UI/Filter";
 import { getAllImages } from "../utils/drive";
 
 export default function Home(props) {
@@ -55,7 +56,8 @@ export default function Home(props) {
 
   return (
     <>
-      <ImageSearch onSearch={searchHandler} query={router.query.search} />
+      <SearchBar onSearch={searchHandler} query={router.query.search} />
+      <Filter />
       <InfiniteScroll
         dataLength={items.length}
         next={() => loadMoreHandler(pageToken)}

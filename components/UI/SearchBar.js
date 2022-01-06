@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-const ImageSearch = (props) => {
+const SearchBar = (props) => {
   const { onSearch } = props;
 
   const [query, setQuery] = useState(props.query || "");
@@ -30,4 +30,4 @@ const ImageSearch = (props) => {
   );
 };
 
-export default ImageSearch;
+export default SearchBar;
