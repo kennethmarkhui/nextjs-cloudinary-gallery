@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ImageList from "../components/Image/ImageList";
@@ -16,8 +17,12 @@ export default function Home(props) {
   const [queryString, setQueryString] = useState({ query: "", mode: "" });
 
   useEffect(() => {
-    if (!router.isReady || router.asPath === "/") return;
-    // console.log("router changed", router.asPath);
+    if (!router.isReady || router.asPath === "/") {
+      // console.log("useEffect router changed not search");
+      setQueryString({ query: "", mode: "default" });
+      return;
+    }
+    // console.log("useEffect router changed", router.asPath);
     setQueryString({ query: router.asPath, mode: "search" });
   }, [router.asPath, router.isReady]);
 
@@ -25,22 +30,17 @@ export default function Home(props) {
     console.log("useEffect queryString before empty check");
     if (queryString.query === "" && queryString.mode === "") return;
     console.log("useEffect queryString after empty check");
-    if (queryString.mode === "search") {
-      (async () => {
-        const res = await fetch(`/api/drive${queryString.query}`);
-        const data = await res.json();
+    (async () => {
+      const res = await fetch(`/api/drive${queryString.query}`);
+      const data = await res.json();
+      if (queryString.mode === "search" || queryString.mode === "default") {
         setItems(data.result.files);
-        setPageToken(data.result.nextPageToken);
-      })();
-    }
-    if (queryString.mode === "load-more") {
-      (async () => {
-        const res = await fetch(`/api/drive${queryString.query}`);
-        const data = await res.json();
+      }
+      if (queryString.mode === "load-more") {
         setItems((prev) => [...prev, ...data.result.files]);
-        setPageToken(data.result.nextPageToken);
-      })();
-    }
+      }
+      setPageToken(data.result.nextPageToken);
+    })();
   }, [queryString]);
 
   const searchHandler = async (text) => {
@@ -53,7 +53,7 @@ export default function Home(props) {
   };
 
   const filterHandler = (order) => {
-    console.log(order);
+    console.log(`orderBy ${order ? "Ascending" : "Descending"}`);
   };
 
   const loadMoreHandler = async (token) => {
@@ -70,6 +70,9 @@ export default function Home(props) {
 
   return (
     <>
+      <Link href="/">
+        <a>Logo</a>
+      </Link>
       <SearchBar onSearch={searchHandler} query={router.query.search} />
       <Filter onFilter={filterHandler} />
       <InfiniteScroll
