@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const Filter = () => {
-  const [orderByToggle, setOrderByToggle] = useState(true);
+const Filter = (props) => {
+  const { onFilter } = props;
+  const [orderByToggle, setOrderByToggle] = useState(true); // true='Ascending' false='Descending'
+
+  useEffect(() => {
+    onFilter(orderByToggle);
+  }, [orderByToggle, onFilter]);
 
   const handleClick = () => {
     setOrderByToggle(!orderByToggle);

@@ -13,21 +13,35 @@ export default function Home(props) {
 
   const [items, setItems] = useState(props.files);
   const [pageToken, setPageToken] = useState(props.nextPageToken);
+  const [queryString, setQueryString] = useState({ query: "", mode: "" });
 
   useEffect(() => {
     if (!router.isReady || router.asPath === "/") return;
     // console.log("router changed", router.asPath);
-
-    const fetchData = async () => {
-      const res = await fetch(`/api/drive${router.asPath}`);
-      const data = await res.json();
-      // console.log(data);
-      setItems(data.result.files);
-      setPageToken(data.result.nextPageToken);
-    };
-
-    fetchData();
+    setQueryString({ query: router.asPath, mode: "search" });
   }, [router.asPath, router.isReady]);
+
+  useEffect(() => {
+    console.log("useEffect queryString before empty check");
+    if (queryString.query === "" && queryString.mode === "") return;
+    console.log("useEffect queryString after empty check");
+    if (queryString.mode === "search") {
+      (async () => {
+        const res = await fetch(`/api/drive${queryString.query}`);
+        const data = await res.json();
+        setItems(data.result.files);
+        setPageToken(data.result.nextPageToken);
+      })();
+    }
+    if (queryString.mode === "load-more") {
+      (async () => {
+        const res = await fetch(`/api/drive${queryString.query}`);
+        const data = await res.json();
+        setItems((prev) => [...prev, ...data.result.files]);
+        setPageToken(data.result.nextPageToken);
+      })();
+    }
+  }, [queryString]);
 
   const searchHandler = async (text) => {
     console.log(text);
@@ -38,26 +52,26 @@ export default function Home(props) {
     });
   };
 
+  const filterHandler = (order) => {
+    console.log(order);
+  };
+
   const loadMoreHandler = async (token) => {
     // console.log(token);
 
-    const res = await fetch(
-      `/api/drive${
-        router.asPath !== "/"
-          ? `${router.asPath}&token=${token}`
-          : `/?token=${token}`
-      }`
-    );
-    const data = await res.json();
-    // console.log(data);
-    setItems([...items, ...data.result.files]);
-    setPageToken(data.result.nextPageToken);
+    const query = `${
+      router.asPath !== "/"
+        ? `${router.asPath}&token=${token}`
+        : `/?token=${token}`
+    }`;
+
+    setQueryString({ query: query, mode: "load-more" });
   };
 
   return (
     <>
       <SearchBar onSearch={searchHandler} query={router.query.search} />
-      <Filter />
+      <Filter onFilter={filterHandler} />
       <InfiniteScroll
         dataLength={items.length}
         next={() => loadMoreHandler(pageToken)}
