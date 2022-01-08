@@ -1,16 +1,19 @@
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 const SearchBar = (props) => {
   const { onSearch } = props;
+  // console.log("SearchBar initial query ", props.query);
 
-  const [query, setQuery] = useState(props.query || "");
+  const [query, setQuery] = useState(props.query);
 
-  const searchRef = useRef();
+  useEffect(() => {
+    setQuery(props.query);
+  }, [props.query]);
 
   const handleClick = (e) => {
     e.preventDefault();
-    if (searchRef.current.value !== "") {
-      onSearch(searchRef.current.value);
+    if (query && query !== "") {
+      onSearch(query);
     }
   };
 
@@ -20,8 +23,7 @@ const SearchBar = (props) => {
       <input
         type="text"
         id="name"
-        ref={searchRef}
-        value={query}
+        value={query || ""}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="search"
       />

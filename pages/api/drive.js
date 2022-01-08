@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   console.log("not search");
   let result;
   try {
-    result = await getAllImages(pageSize, req.query.token);
+    result = await getAllImages(pageSize, req.query.token, req.query.order);
   } catch (error) {
     res.status(500).json({ message: "Getting nextpages failed!" });
     return;

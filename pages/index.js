@@ -27,9 +27,9 @@ export default function Home(props) {
   }, [router.asPath, router.isReady]);
 
   useEffect(() => {
-    console.log("useEffect queryString before empty check");
+    // console.log("useEffect queryString before empty check");
     if (queryString.query === "" && queryString.mode === "") return;
-    console.log("useEffect queryString after empty check");
+    // console.log("useEffect queryString after empty check");
     (async () => {
       const res = await fetch(`/api/drive${queryString.query}`);
       const data = await res.json();
@@ -52,8 +52,10 @@ export default function Home(props) {
     });
   };
 
-  const filterHandler = (order) => {
+  const filterHandler = async (order) => {
     console.log(`orderBy ${order ? "Ascending" : "Descending"}`);
+
+    await router.push({ query: order ? "" : { order: `desc` } });
   };
 
   const loadMoreHandler = async (token) => {
@@ -74,7 +76,7 @@ export default function Home(props) {
         <a>Logo</a>
       </Link>
       <SearchBar onSearch={searchHandler} query={router.query.search} />
-      <Filter onFilter={filterHandler} />
+      <Filter onFilter={filterHandler} query={router.query.order} />
       <InfiniteScroll
         dataLength={items.length}
         next={() => loadMoreHandler(pageToken)}
