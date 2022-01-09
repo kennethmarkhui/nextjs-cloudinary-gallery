@@ -11,6 +11,9 @@ oauth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
 const drive = google.drive({ version: "v3", auth: oauth2Client });
 
 export const getAllImages = async (pageSize, nextPageToken, order) => {
+  // console.log(
+  //   `[utils/drive getAllImages] pageSize: ${pageSize} nextPageToken: ${nextPageToken} order: ${order}`
+  // );
   let res;
   try {
     res = await drive.files.list({
@@ -35,7 +38,10 @@ export const getAllImages = async (pageSize, nextPageToken, order) => {
   };
 };
 
-export const getImagesByName = async (pageSize, text, nextPageToken) => {
+export const getImagesByName = async (pageSize, nextPageToken, text, order) => {
+  // console.log(
+  //   `[utils/drive getImagesByName] pageSize: ${pageSize} nextPageToken: ${nextPageToken} text: ${text} order: ${order}`
+  // );
   let res;
   try {
     res = await drive.files.list({
@@ -45,7 +51,7 @@ export const getImagesByName = async (pageSize, text, nextPageToken) => {
       pageSize: pageSize,
       fields: "nextPageToken, files(id, name, mimeType)",
       // fields: "nextPageToken, files(*)",
-      orderBy: "name_natural",
+      orderBy: `name_natural ${order ? order : ""}`,
     });
     // console.log(res.data.nextPageToken);
   } catch (error) {

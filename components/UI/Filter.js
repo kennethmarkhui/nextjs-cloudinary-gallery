@@ -16,7 +16,9 @@ const Filter = (props) => {
 
   return (
     <>
-      <button onClick={handleClick}>{orderByToggle ? "up" : "down"}</button>
+      <button onClick={handleClick}>
+        {orderByToggle ? "Ascending" : "Descending"}
+      </button>
     </>
   );
 };

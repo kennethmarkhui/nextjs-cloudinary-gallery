@@ -30,6 +30,7 @@ export default function Home(props) {
     // console.log("useEffect queryString before empty check");
     if (queryString.query === "" && queryString.mode === "") return;
     // console.log("useEffect queryString after empty check");
+    // console.log(queryString.mode);
     (async () => {
       const res = await fetch(`/api/drive${queryString.query}`);
       const data = await res.json();
@@ -44,7 +45,7 @@ export default function Home(props) {
   }, [queryString]);
 
   const searchHandler = async (text) => {
-    console.log(text);
+    // console.log('searchhandler ', text);
 
     await router.push({
       pathname: "/",
@@ -53,9 +54,20 @@ export default function Home(props) {
   };
 
   const filterHandler = async (order) => {
-    console.log(`orderBy ${order ? "Ascending" : "Descending"}`);
+    // console.log(`orderBy ${order ? "Ascending" : "Descending"}`);
 
-    await router.push({ query: order ? "" : { order: `desc` } });
+    let newQuery;
+
+    if (router.query.search) {
+      newQuery = order
+        ? { ...router.query }
+        : { ...router.query, order: "desc" };
+    } else {
+      newQuery = order ? "" : { order: "desc" };
+    }
+
+    // console.log(newQuery);
+    await router.push({ query: newQuery });
   };
 
   const loadMoreHandler = async (token) => {
