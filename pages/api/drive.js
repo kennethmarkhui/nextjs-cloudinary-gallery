@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     try {
       result = await getAllImages(pageSize, undefined, order);
     } catch (error) {
-      res.status(500).json({ message: "Getting data failed!" });
+      res.status(500).json({ error: "Getting data failed!" });
       return;
     }
     return res.status(200).json({ message: "default GET endpoint", result });
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
     try {
       result = await getImagesByName(pageSize, undefined, search, order);
     } catch (error) {
-      res.status(500).json({ message: "Searching data failed!" });
+      res.status(500).json({ error: "Searching data failed!" });
       return;
     }
     return res.status(200).json({ message: "search GET success", result });
@@ -38,15 +38,15 @@ export default async function handler(req, res) {
   ) {
     console.log("load-more");
     let result;
-    if (req.query.token && !req.query.search) {
-      result = await getAllImages(pageSize, token, order);
-    }
     try {
+      if (req.query.token && !req.query.search) {
+        result = await getAllImages(pageSize, token, order);
+      }
       if (req.query.token && req.query.search) {
         result = await getImagesByName(pageSize, token, search, order);
       }
     } catch (error) {
-      res.status(500).json({ message: "Getting nextpages failed!" });
+      res.status(500).json({ error: "Getting nextpages failed!" });
       return;
     }
     return res.status(200).json({ message: "load-more GET success", result });

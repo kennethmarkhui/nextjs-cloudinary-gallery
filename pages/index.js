@@ -17,14 +17,17 @@ export default function Home(props) {
   const [queryString, setQueryString] = useState({ query: "", mode: "" });
 
   useEffect(() => {
-    if (!router.isReady || router.asPath === "/") {
+    if (!router.isReady || router.asPath === "/" || !router.query.search) {
       // console.log("useEffect router changed not search");
-      setQueryString({ query: "", mode: "default" });
+      setQueryString({
+        query: router.query.order ? router.asPath : "",
+        mode: "default",
+      });
       return;
     }
     // console.log("useEffect router changed", router.asPath);
     setQueryString({ query: router.asPath, mode: "search" });
-  }, [router.asPath, router.isReady]);
+  }, [router.asPath, router.isReady, router.query]);
 
   useEffect(() => {
     // console.log("useEffect queryString before empty check");
