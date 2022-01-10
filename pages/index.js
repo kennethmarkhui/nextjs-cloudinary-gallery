@@ -62,9 +62,8 @@ export default function Home(props) {
     let newQuery;
 
     if (router.query.search) {
-      newQuery = order
-        ? { ...router.query }
-        : { ...router.query, order: "desc" };
+      const { order, search } = router.query;
+      newQuery = order ? { search } : { ...router.query, order: "desc" };
     } else {
       newQuery = order ? "" : { order: "desc" };
     }
