@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 const Filter = (props) => {
   const { onFilter } = props;
 
-  const [orderByToggle, setOrderByToggle] = useState(!props.query);
+  const [orderByToggle, setOrderByToggle] = useState(!props.orderQuery);
 
   useEffect(() => {
-    setOrderByToggle(!props.query);
-  }, [props.query]);
+    setOrderByToggle(!props.orderQuery);
+  }, [props.orderQuery]);
 
   const handleClick = () => {
     setOrderByToggle(!orderByToggle);

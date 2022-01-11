@@ -3,21 +3,19 @@ import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ImageList from "../components/Image/ImageList";
 import Filter from "../components/UI/Filter";
-import { getAllImages } from "../lib/gdrive";
 
-export default function Home(props) {
-  // console.log(props);
+export default function Search() {
+  const [items, setItems] = useState([]);
+  const [pageToken, setPageToken] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
 
-  const [items, setItems] = useState(props.files);
-  const [pageToken, setPageToken] = useState(props.nextPageToken);
-  const [isLoading, setIsLoading] = useState(false);
-
   useEffect(() => {
-    // if (!router.isReady || router.asPath === router.pathname) return;
-    console.log("home useEffect router", router);
-    setIsLoading(true);
+    // console.log(router);
+    if (!router.query.q || !router.isReady || router.asPath === router.pathname)
+      return;
+    console.log("search useeffect router", router);
     (async () => {
       const res = await fetch(`/api/gdrive${router.asPath}`);
       const data = await res.json();
@@ -27,20 +25,18 @@ export default function Home(props) {
     })();
   }, [router]);
 
-  const filterHandler = (orderBy) => {
-    console.log(`home orderBy ${orderBy ? "Ascending" : "Descending"}`);
-
-    router.push({ query: orderBy ? "" : { order: "desc" } });
+  const filterHandler = async (orderBy) => {
+    console.log(`search orderBy ${orderBy ? "Ascending" : "Descending"}`);
+    const { order, q } = router.query;
+    const newQuery = orderBy ? { q } : { ...router.query, order: "desc" };
+    // console.log("filterHandler ", newQuery);
+    router.push({ query: newQuery });
   };
 
   const loadMoreHandler = async (token) => {
-    const newQuery = `${
-      router.asPath !== "/"
-        ? `${router.asPath}&nextPageToken=${token}`
-        : `/?nextPageToken=${token}`
-    }`;
-
-    const res = await fetch(`/api/gdrive${newQuery}`);
+    const res = await fetch(
+      `/api/gdrive${router.asPath}&nextPageToken=${token}`
+    );
     const data = await res.json();
     setItems((prev) => [...prev, ...data.result.files]);
     setPageToken(data.result.nextPageToken);
@@ -48,6 +44,7 @@ export default function Home(props) {
 
   return (
     <>
+      <p>searchpage</p>
       {isLoading && <h4>Loading...</h4>}
       {!isLoading && (
         <>
@@ -69,15 +66,4 @@ export default function Home(props) {
       )}
     </>
   );
-}
-
-export async function getServerSideProps() {
-  const { files, nextPageToken } = await getAllImages(5);
-
-  return {
-    props: {
-      files,
-      nextPageToken,
-    },
-  };
 }

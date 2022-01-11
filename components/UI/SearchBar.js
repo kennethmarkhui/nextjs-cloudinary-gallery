@@ -1,24 +1,26 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const SearchBar = (props) => {
   const { onSearch } = props;
   // console.log("SearchBar initial query ", props.query);
 
-  const [query, setQuery] = useState(props.query);
+  const [query, setQuery] = useState("");
+
+  const router = useRouter();
 
   useEffect(() => {
-    setQuery(props.query);
-  }, [props.query]);
+    setQuery(router.query.q);
+  }, [router.query.q]);
 
-  const handleClick = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (query && query !== "") {
-      onSearch(query);
-    }
+
+    router.push({ pathname: "/search", query: { q: query } });
   };
 
   return (
-    <form onSubmit={handleClick}>
+    <form onSubmit={handleSubmit}>
       <label htmlFor="name" />
       <input
         type="text"
