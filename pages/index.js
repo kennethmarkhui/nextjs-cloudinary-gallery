@@ -15,17 +15,29 @@ export default function Home(props) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // if (!router.isReady || router.asPath === router.pathname) return;
-    console.log("home useEffect router", router);
-    setIsLoading(true);
-    (async () => {
-      const res = await fetch(`/api/gdrive${router.asPath}`);
-      const data = await res.json();
-      setItems(data.result.files);
-      setPageToken(data.result.nextPageToken);
-      setIsLoading(false);
-    })();
-  }, [router]);
+    if (!router.isReady || router.asPath === router.pathname) {
+      console.log("home useEffect router === '/'", router);
+      setItems(props.files);
+      setPageToken(props.nextPageToken);
+      return;
+    }
+    if (!router.isReady || router.asPath !== router.pathname) {
+      console.log("home useEffect router !== '/'", router);
+      setIsLoading(true);
+      (async () => {
+        try {
+          const res = await fetch(`/api/gdrive${router.asPath}`);
+          const data = await res.json();
+          setItems(data.result.files);
+          setPageToken(data.result.nextPageToken);
+          setIsLoading(false);
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+      return;
+    }
+  }, [router, props]);
 
   const filterHandler = (orderBy) => {
     console.log(`home orderBy ${orderBy ? "Ascending" : "Descending"}`);
@@ -40,10 +52,14 @@ export default function Home(props) {
         : `/?nextPageToken=${token}`
     }`;
 
-    const res = await fetch(`/api/gdrive${newQuery}`);
-    const data = await res.json();
-    setItems((prev) => [...prev, ...data.result.files]);
-    setPageToken(data.result.nextPageToken);
+    try {
+      const res = await fetch(`/api/gdrive${newQuery}`);
+      const data = await res.json();
+      setItems((prev) => [...prev, ...data.result.files]);
+      setPageToken(data.result.nextPageToken);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

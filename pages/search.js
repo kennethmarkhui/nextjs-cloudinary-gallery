@@ -17,11 +17,15 @@ export default function Search() {
       return;
     console.log("search useeffect router", router);
     (async () => {
-      const res = await fetch(`/api/gdrive${router.asPath}`);
-      const data = await res.json();
-      setItems(data.result.files);
-      setPageToken(data.result.nextPageToken);
-      setIsLoading(false);
+      try {
+        const res = await fetch(`/api/gdrive${router.asPath}`);
+        const data = await res.json();
+        setItems(data.result.files);
+        setPageToken(data.result.nextPageToken);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
     })();
   }, [router]);
 
@@ -34,12 +38,16 @@ export default function Search() {
   };
 
   const loadMoreHandler = async (token) => {
-    const res = await fetch(
-      `/api/gdrive${router.asPath}&nextPageToken=${token}`
-    );
-    const data = await res.json();
-    setItems((prev) => [...prev, ...data.result.files]);
-    setPageToken(data.result.nextPageToken);
+    try {
+      const res = await fetch(
+        `/api/gdrive${router.asPath}&nextPageToken=${token}`
+      );
+      const data = await res.json();
+      setItems((prev) => [...prev, ...data.result.files]);
+      setPageToken(data.result.nextPageToken);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
