@@ -7,13 +7,13 @@ const ImageList = (props) => {
     <>
       <ul>
         {files.map((item) => (
-          <li key={item.id}>
-            {item.name} - {item.mimeType}
-            <p>https://drive.google.com/uc?id={item.id}</p>
+          <li key={item.public_id}>
+            {item.filename}
+            <p>{item.secure_url}</p>
             <Image
-              unoptimized // sometimes returns 403 forbidden if not set to true
-              src={"https://drive.google.com/uc?id=" + item.id}
-              alt={item.name}
+              // unoptimized // sometimes returns 403 forbidden if not set to true
+              src={item.secure_url}
+              alt={item.display_name}
               width={100}
               height={100}
             />

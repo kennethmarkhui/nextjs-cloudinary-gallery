@@ -6,22 +6,23 @@ import Filter from "../components/UI/Filter";
 
 export default function Search() {
   const [items, setItems] = useState([]);
-  const [pageToken, setPageToken] = useState(null);
+  const [nextCursor, setNextCursor] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
 
   useEffect(() => {
     // console.log(router);
+
     if (!router.query.q || !router.isReady || router.asPath === router.pathname)
       return;
     console.log("search useeffect router", router);
     (async () => {
       try {
-        const res = await fetch(`/api/gdrive${router.asPath}`);
+        const res = await fetch(`/api/cloudinary${router.asPath}`);
         const data = await res.json();
-        setItems(data.result.files);
-        setPageToken(data.result.nextPageToken);
+        setItems(data.resources);
+        setNextCursor(data.next_cursor);
         setIsLoading(false);
       } catch (error) {
         console.log(error);
@@ -33,18 +34,17 @@ export default function Search() {
     console.log(`search orderBy ${orderBy ? "Ascending" : "Descending"}`);
     const { order, q } = router.query;
     const newQuery = orderBy ? { q } : { ...router.query, order: "desc" };
-    // console.log("filterHandler ", newQuery);
     router.push({ query: newQuery });
   };
 
   const loadMoreHandler = async (token) => {
     try {
       const res = await fetch(
-        `/api/gdrive${router.asPath}&nextPageToken=${token}`
+        `/api/cloudinary${router.asPath}&nextCursor=${token}`
       );
       const data = await res.json();
-      setItems((prev) => [...prev, ...data.result.files]);
-      setPageToken(data.result.nextPageToken);
+      setItems((prev) => [...prev, ...data.resources]);
+      setNextCursor(data.next_cursor);
     } catch (error) {
       console.log(error);
     }
@@ -59,8 +59,8 @@ export default function Search() {
           <Filter onFilter={filterHandler} orderQuery={router.query.order} />
           <InfiniteScroll
             dataLength={items.length}
-            next={() => loadMoreHandler(pageToken)}
-            hasMore={!!pageToken}
+            next={() => loadMoreHandler(nextCursor)}
+            hasMore={!!nextCursor}
             loader={<h4>Loading...</h4>}
             endMessage={
               <p style={{ textAlign: "center" }}>

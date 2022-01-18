@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const SearchBar = (props) => {
-  const { onSearch } = props;
   // console.log("SearchBar initial query ", props.query);
 
   const [query, setQuery] = useState("");

@@ -3,22 +3,22 @@ import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ImageList from "../components/Image/ImageList";
 import Filter from "../components/UI/Filter";
-import { getAllImages } from "../lib/gdrive";
+import { getFiles } from "../lib/cloudinary";
 
 export default function Home(props) {
   // console.log(props);
 
   const router = useRouter();
 
-  const [items, setItems] = useState(props.files);
-  const [pageToken, setPageToken] = useState(props.nextPageToken);
+  const [items, setItems] = useState(props.resources);
+  const [nextCursor, setnextCursor] = useState(props.nextCursor);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!router.isReady || router.asPath === router.pathname) {
       console.log("home useEffect router === '/'", router);
-      setItems(props.files);
-      setPageToken(props.nextPageToken);
+      setItems(props.resources);
+      setnextCursor(props.nextCursor);
       return;
     }
     if (!router.isReady || router.asPath !== router.pathname) {
@@ -26,10 +26,10 @@ export default function Home(props) {
       setIsLoading(true);
       (async () => {
         try {
-          const res = await fetch(`/api/gdrive${router.asPath}`);
+          const res = await fetch(`/api/cloudinary${router.asPath}`);
           const data = await res.json();
-          setItems(data.result.files);
-          setPageToken(data.result.nextPageToken);
+          setItems(data.resources);
+          setnextCursor(data.next_cursor);
           setIsLoading(false);
         } catch (error) {
           console.log(error);
@@ -48,15 +48,15 @@ export default function Home(props) {
   const loadMoreHandler = async (token) => {
     const newQuery = `${
       router.asPath !== "/"
-        ? `${router.asPath}&nextPageToken=${token}`
-        : `/?nextPageToken=${token}`
+        ? `${router.asPath}&nextCursor=${token}`
+        : `/?nextCursor=${token}`
     }`;
 
     try {
-      const res = await fetch(`/api/gdrive${newQuery}`);
+      const res = await fetch(`/api/cloudinary${newQuery}`);
       const data = await res.json();
-      setItems((prev) => [...prev, ...data.result.files]);
-      setPageToken(data.result.nextPageToken);
+      setItems((prev) => [...prev, ...data.resources]);
+      setnextCursor(data.next_cursor);
     } catch (error) {
       console.log(error);
     }
@@ -70,8 +70,8 @@ export default function Home(props) {
           <Filter onFilter={filterHandler} orderQuery={router.query.order} />
           <InfiniteScroll
             dataLength={items.length}
-            next={() => loadMoreHandler(pageToken)}
-            hasMore={!!pageToken}
+            next={() => loadMoreHandler(nextCursor)}
+            hasMore={!!nextCursor}
             loader={<h4>Loading...</h4>}
             endMessage={
               <p style={{ textAlign: "center" }}>
@@ -88,12 +88,12 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps() {
-  const { files, nextPageToken } = await getAllImages(5);
+  const { resources, next_cursor: nextCursor } = await getFiles(5);
 
   return {
     props: {
-      files,
-      nextPageToken,
+      resources,
+      nextCursor,
     },
   };
 }
