@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 
 const SearchBar = () => {
   console.log("Rendered SearchBar");
-  // console.log("SearchBar initial query ", props.query);
 
   const [query, setQuery] = useState("");
 

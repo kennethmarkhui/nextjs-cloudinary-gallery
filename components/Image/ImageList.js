@@ -1,11 +1,15 @@
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 
 const ImageList = (props) => {
+  const renderCount = useRef(1);
+  useEffect(() => (renderCount.current = renderCount.current + 1));
   console.log("Rendered ImageList");
   const { files } = props;
   return (
     <>
       <ul>
+        <p>{`ImageList Rendered ${renderCount.current} times`}</p>
         {files.map((item) => {
           const transformations = "e_blur:2000,q_1";
           let a = item.secure_url;

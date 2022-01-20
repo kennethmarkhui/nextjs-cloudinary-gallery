@@ -1,25 +1,32 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-const Filter = (props) => {
+const Filter = () => {
   console.log("Rendered Filter");
-  const { onFilter } = props;
+  const router = useRouter();
 
-  const [orderByToggle, setOrderByToggle] = useState(!props.orderQuery);
+  const [orderByToggle, setOrderByToggle] = useState(!!router.query.order);
 
   useEffect(() => {
-    console.log("Filter useffect ran");
-    setOrderByToggle(!props.orderQuery);
-  }, [props.orderQuery]);
+    setOrderByToggle(router.query.order);
+  }, [router.query.order]);
 
   const handleClick = () => {
-    setOrderByToggle(!orderByToggle);
-    onFilter(!orderByToggle);
+    let newQuery;
+    const { order, search } = router.query;
+    if (router.query.search) {
+      newQuery = order ? { search } : { ...router.query, order: "desc" };
+    }
+    if (!router.query.search) {
+      newQuery = order ? "" : { order: "desc" };
+    }
+    router.push({ query: newQuery });
   };
 
   return (
     <>
       <button onClick={handleClick}>
-        {orderByToggle ? "Ascending" : "Descending"}
+        {!orderByToggle ? "Ascending" : "Descending"}
       </button>
     </>
   );
