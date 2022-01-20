@@ -1,15 +1,15 @@
-import { getFiles } from "../../../lib/cloudinary";
+import { getFiles } from "../../lib/cloudinary";
 
-export default async function (req, res) {
+export default async function handler(req, res) {
   // console.log(req.query);
   const maxResults = 5;
-  const { nextCursor, order } = req.query;
+  const { search, nextCursor, order } = req.query;
 
   // GET '/'
-  console.log("get all");
+  console.log("api");
   let result;
   try {
-    result = await getFiles(maxResults, nextCursor, order);
+    result = await getFiles(maxResults, nextCursor, search, order);
   } catch (error) {
     res.status(500).json({ error: "Getting data failed!" });
     return;

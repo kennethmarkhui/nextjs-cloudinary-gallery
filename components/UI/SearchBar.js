@@ -1,7 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-const SearchBar = (props) => {
+const SearchBar = () => {
+  console.log("Rendered SearchBar");
   // console.log("SearchBar initial query ", props.query);
 
   const [query, setQuery] = useState("");
@@ -9,13 +10,15 @@ const SearchBar = (props) => {
   const router = useRouter();
 
   useEffect(() => {
-    setQuery(router.query.q);
-  }, [router.query.q]);
+    console.log("SearchBar useeffect ran");
+    setQuery(router.query.search);
+  }, [router.query.search]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    router.push({ pathname: "/search", query: { q: query } });
+    if (query) {
+      router.push({ query: { search: query } });
+    }
   };
 
   return (

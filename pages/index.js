@@ -7,6 +7,7 @@ import { getFiles } from "../lib/cloudinary";
 
 export default function Home(props) {
   // console.log(props);
+  console.log("Rendered Home");
 
   const router = useRouter();
 
@@ -42,10 +43,19 @@ export default function Home(props) {
   const filterHandler = (orderBy) => {
     console.log(`home orderBy ${orderBy ? "Ascending" : "Descending"}`);
 
-    router.push({ query: orderBy ? "" : { order: "desc" } });
+    let newQuery;
+    const { order, search } = router.query;
+    if (router.query.search) {
+      newQuery = order ? { search } : { ...router.query, order: "desc" };
+    }
+    if (!router.query.search) {
+      newQuery = order ? "" : { order: "desc" };
+    }
+    router.push({ query: newQuery });
   };
 
   const loadMoreHandler = async (token) => {
+    console.log("loadMoreHandler ran");
     const newQuery = `${
       router.asPath !== "/"
         ? `${router.asPath}&nextCursor=${token}`

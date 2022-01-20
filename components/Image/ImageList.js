@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 const ImageList = (props) => {
+  console.log("Rendered ImageList");
   const { files } = props;
   return (
     <>
