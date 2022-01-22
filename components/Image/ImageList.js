@@ -1,42 +1,31 @@
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Spinner from "../UI/Spinner";
+import Img from "./Img";
+// import { useEffect, useRef } from "react";
 
 const ImageList = (props) => {
-  const renderCount = useRef(1);
-  useEffect(() => (renderCount.current = renderCount.current + 1));
+  // const renderCount = useRef(1);
+  // useEffect(() => (renderCount.current = renderCount.current + 1));
   console.log("Rendered ImageList");
-  const { files } = props;
+  const { files, nextCursor, onLoadMore } = props;
   return (
-    <>
-      <ul>
-        <p>{`ImageList Rendered ${renderCount.current} times`}</p>
-        {files.map((item) => {
-          const transformations = "e_blur:2000,q_1";
-          let a = item.secure_url;
-          let b;
-
-          return (
-            <li key={item.public_id}>
-              {item.filename}
-              <p>{item.secure_url}</p>
-              <Image
-                // unoptimized // sometimes returns 403 forbidden if not set to true
-                src={item.secure_url}
-                alt={item.display_name}
-                width={100}
-                height={100}
-                placeholder="blur"
-                blurDataURL={
-                  (a =
-                    ((b = a.split("/")).splice(6, 0, transformations),
-                    b.join("/")))
-                }
-              />
-            </li>
-          );
-        })}
-      </ul>
-    </>
+    <InfiniteScroll
+      dataLength={files.length}
+      next={onLoadMore}
+      hasMore={!!nextCursor}
+      loader={<Spinner />}
+      endMessage={
+        <p style={{ textAlign: "center" }}>
+          <b>Yay! You have seen it all</b>
+        </p>
+      }
+    >
+      {/* <p>{`ImageList Rendered ${renderCount.current} times`}</p> */}
+      {files.map((item) => {
+        return <Img key={item.public_id} item={item} />;
+      })}
+    </InfiniteScroll>
   );
 };
 

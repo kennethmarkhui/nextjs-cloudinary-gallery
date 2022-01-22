@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import ImageList from "../components/Image/ImageList";
 import { getFiles } from "../lib/cloudinary";
+import Spinner from "../components/UI/Spinner";
 
 export default function Home(props) {
   // console.log(props);
@@ -13,8 +13,8 @@ export default function Home(props) {
   const [nextCursor, setnextCursor] = useState(props.nextCursor);
   const [isLoading, setIsLoading] = useState(false);
 
-  const renderCount = useRef(1);
-  useEffect(() => (renderCount.current = renderCount.current + 1));
+  // const renderCount = useRef(1);
+  // useEffect(() => (renderCount.current = renderCount.current + 1));
 
   useEffect(() => {
     if (!router.isReady || router.asPath === router.pathname) {
@@ -43,12 +43,12 @@ export default function Home(props) {
     }
   }, [router, props]);
 
-  const loadMoreHandler = async (token) => {
+  const loadMoreHandler = async () => {
     console.log("loadMoreHandler ran");
     const newQuery = `${
       router.asPath !== "/"
-        ? `${router.asPath.substring(1)}&nextCursor=${token}`
-        : `?nextCursor=${token}`
+        ? `${router.asPath.substring(1)}&nextCursor=${nextCursor}`
+        : `?nextCursor=${nextCursor}`
     }`;
 
     try {
@@ -63,24 +63,14 @@ export default function Home(props) {
 
   return (
     <>
-      <p>{`Home Rendered ${renderCount.current} times`}</p>
-      {isLoading && <h4>Loading...</h4>}
+      {/* <p>{`Home Rendered ${renderCount.current} times`}</p> */}
+      {isLoading && <Spinner />}
       {!isLoading && (
-        <>
-          <InfiniteScroll
-            dataLength={items.length}
-            next={() => loadMoreHandler(nextCursor)}
-            hasMore={!!nextCursor}
-            loader={<h4>Loading...</h4>}
-            endMessage={
-              <p style={{ textAlign: "center" }}>
-                <b>Yay! You have seen it all</b>
-              </p>
-            }
-          >
-            <ImageList files={items} />
-          </InfiniteScroll>
-        </>
+        <ImageList
+          files={items}
+          nextCursor={nextCursor}
+          onLoadMore={loadMoreHandler}
+        />
       )}
     </>
   );

@@ -1,0 +1,6 @@
+.main {
+  /* @apply flex-1; */
+}
+.content {
+  /* @apply container px-4 py-5 mx-auto; */
+}

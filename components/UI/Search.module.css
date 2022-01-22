@@ -1,0 +1,11 @@
+.search {
+  @apply flex flex-row items-center justify-center;
+}
+
+.form {
+  @apply relative w-full flex border rounded-md;
+}
+
+.input {
+  @apply w-full max-w-full h-10 px-4 m-1 bg-transparent border-none appearance-none focus:outline-none focus:placeholder-transparent focus:ring-0;
+}

@@ -1,5 +1,11 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import {
+  SortAscendingIcon,
+  SortDescendingIcon,
+} from "@heroicons/react/outline";
+import Button from "./Button";
+import classes from "./Filter.module.css";
 
 const Filter = () => {
   console.log("Rendered Filter");
@@ -24,11 +30,15 @@ const Filter = () => {
   };
 
   return (
-    <>
-      <button onClick={handleClick}>
-        {!orderByToggle ? "Ascending" : "Descending"}
-      </button>
-    </>
+    <div className={classes.filter}>
+      <Button onClick={handleClick}>
+        {!orderByToggle ? (
+          <SortAscendingIcon className="h-6 w-6" />
+        ) : (
+          <SortDescendingIcon className="h-6 w-6" />
+        )}
+      </Button>
+    </div>
   );
 };
 
