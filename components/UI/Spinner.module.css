@@ -1,3 +1,6 @@
 .spinner {
-  /* @apply flex items-center justify-center p-5; */
+  @apply flex items-center justify-center p-5;
+}
+.svg {
+  @apply animate-spin;
 }

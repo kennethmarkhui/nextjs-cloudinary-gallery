@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import ImageList from "../components/Image/ImageList";
+import Gallery from "../components/Gallery/Gallery";
 import { getFiles } from "../lib/cloudinary";
 import Spinner from "../components/UI/Spinner";
 
@@ -64,9 +64,9 @@ export default function Home(props) {
   return (
     <>
       {/* <p>{`Home Rendered ${renderCount.current} times`}</p> */}
-      {isLoading && <Spinner />}
+      {isLoading && <Spinner className="h-6 w-6" />}
       {!isLoading && (
-        <ImageList
+        <Gallery
           files={items}
           nextCursor={nextCursor}
           onLoadMore={loadMoreHandler}

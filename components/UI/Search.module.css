@@ -9,3 +9,7 @@
 .input {
   @apply w-full max-w-full h-10 px-4 m-1 bg-transparent border-none appearance-none focus:outline-none focus:placeholder-transparent focus:ring-0;
 }
+
+.icon {
+  @apply h-6 w-6;
+}

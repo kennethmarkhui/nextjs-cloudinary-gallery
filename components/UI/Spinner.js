@@ -1,10 +1,10 @@
 import classes from "./Spinner.module.css";
 
-const Spinner = () => {
+const Spinner = ({ className }) => {
   return (
     <div className={classes.spinner}>
       <svg
-        className="animate-spin -ml-1 mr-3 h-5 w-5 text-black"
+        className={`${classes.svg} ${className}`} // Provide height and width to see
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"

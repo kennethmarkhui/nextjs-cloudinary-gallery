@@ -30,15 +30,13 @@ const Filter = () => {
   };
 
   return (
-    <div className={classes.filter}>
-      <Button onClick={handleClick}>
-        {!orderByToggle ? (
-          <SortAscendingIcon className="h-6 w-6" />
-        ) : (
-          <SortDescendingIcon className="h-6 w-6" />
-        )}
-      </Button>
-    </div>
+    <Button onClick={handleClick}>
+      {!orderByToggle ? (
+        <SortAscendingIcon className={classes.icon} />
+      ) : (
+        <SortDescendingIcon className={classes.icon} />
+      )}
+    </Button>
   );
 };
 

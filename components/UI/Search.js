@@ -37,7 +37,7 @@ const Search = () => {
           placeholder="Search"
         />
         <Button>
-          <SearchIcon className="h-6 w-6" />
+          <SearchIcon className={classes.icon} />
         </Button>
       </form>
       <Filter />

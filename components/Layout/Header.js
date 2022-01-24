@@ -10,15 +10,13 @@ const Navbar = () => {
   return (
     <header className={classes.header}>
       {/* <p>{`Navbar Rendered ${renderCount.current} times`}</p> */}
-      <div className={classes.content}>
-        <div className={classes.links}>
-          <Logo />
-          <Logo />
-        </div>
+      <div className={classes.links}>
+        <Logo />
+        <Logo />
+      </div>
 
-        <div className={classes.searchOuterDiv}>
-          <Search />
-        </div>
+      <div className={classes.search_outer_div}>
+        <Search />
       </div>
     </header>
   );
