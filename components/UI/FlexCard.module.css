@@ -1,0 +1,9 @@
+.flexcard {
+  @apply m-1 relative rounded-lg overflow-hidden max-h-[40vh];
+}
+.img_container {
+  @apply block;
+}
+.img {
+  @apply absolute top-0 w-full align-bottom;
+}

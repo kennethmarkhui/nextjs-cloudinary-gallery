@@ -18,13 +18,13 @@ export default function Home(props) {
 
   useEffect(() => {
     if (!router.isReady || router.asPath === router.pathname) {
-      console.log("home useEffect router === '/'", router);
+      // console.log("home useEffect router === '/'", router);
       setItems(props.resources);
       setnextCursor(props.nextCursor);
       return;
     }
     if (!router.isReady || router.asPath !== router.pathname) {
-      console.log("home useEffect router !== '/'", router);
+      // console.log("home useEffect router !== '/'", router);
       setIsLoading(true);
       (async () => {
         try {
@@ -41,7 +41,7 @@ export default function Home(props) {
       })();
       return;
     }
-  }, [router, props]);
+  }, [router.isReady, router.asPath, router.pathname, props]);
 
   const loadMoreHandler = async () => {
     console.log("loadMoreHandler ran");
