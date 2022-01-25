@@ -11,6 +11,14 @@ const Gallery = (props) => {
   // useEffect(() => (renderCount.current = renderCount.current + 1));
   console.log("Rendered Gallery");
   const { files, nextCursor, onLoadMore } = props;
+
+  const generateBlurUrl = (url) => {
+    const transformations = "e_blur:2000,q_1";
+    const blurUrl = url.split("/");
+    blurUrl.splice(6, 0, transformations);
+    return blurUrl.join("/");
+  };
+
   return (
     <InfiniteScroll
       className="flex flex-wrap items-center justify-center after:content-[''] after:grow-[999999999]"
@@ -26,13 +34,6 @@ const Gallery = (props) => {
         const flexGrow = Math.round((item.width * 100) / item.height);
         const flexBasis = Math.round((item.width * 240) / item.height);
         const paddingBottom = Math.round((item.height / item.width) * 100.0);
-
-        const generateBlurUrl = (url) => {
-          const transformations = "e_blur:2000,q_1";
-          const blurUrl = url.split("/");
-          blurUrl.splice(6, 0, transformations);
-          return blurUrl.join("/");
-        };
 
         return (
           <FlexCard
