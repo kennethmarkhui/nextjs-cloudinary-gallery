@@ -1,3 +1,4 @@
+import { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Spinner from "../UI/Spinner";
 import FlexCard from "../UI/FlexCard";
@@ -11,6 +12,10 @@ const Gallery = (props) => {
   // useEffect(() => (renderCount.current = renderCount.current + 1));
   console.log("Rendered Gallery");
   const { files, nextCursor, onLoadMore } = props;
+
+  const [active, setActive] = useState(null); // active item.public_id
+
+  const handleSetActive = (id) => setActive(id);
 
   const generateBlurUrl = (url) => {
     const transformations = "e_blur:2000,q_1";
@@ -38,10 +43,14 @@ const Gallery = (props) => {
         return (
           <FlexCard
             key={item.public_id}
+            id={item.public_id}
             src={item.secure_url}
             alt={item.display_name}
+            name={item.display_name}
             style={{ flexGrow, flexBasis, paddingBottom }}
             transformedUrl={generateBlurUrl(item.secure_url)}
+            setActiveFlexCard={handleSetActive}
+            active={active}
           />
         );
       })}

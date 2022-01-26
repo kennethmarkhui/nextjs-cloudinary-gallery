@@ -1,9 +1,31 @@
 .flexcard {
-  @apply m-1 relative rounded-lg overflow-hidden max-h-[40vh];
+  @apply m-1 relative rounded-lg overflow-hidden max-h-[50vh];
 }
-.img_container {
+
+.i {
   @apply block;
 }
+
 .img {
   @apply absolute top-0 w-full align-bottom;
+}
+
+.icon {
+  @apply h-6 w-6;
+}
+
+.overlay {
+  @apply absolute bg-black text-white opacity-60 z-10 inset-0 w-full h-full flex-col justify-between;
+}
+
+.overlay_top {
+  @apply flex justify-end pt-2;
+}
+
+.overlay_bottom {
+  @apply block;
+}
+
+.overlay_bottom_name {
+  @apply m-1 px-2;
 }
