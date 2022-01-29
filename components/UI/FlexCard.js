@@ -8,10 +8,13 @@ const FlexCard = ({
   src,
   alt,
   name,
+  w,
+  h,
   style,
   transformedUrl,
   setActiveFlexCard,
   active,
+  openModal,
 }) => {
   return (
     <figure
@@ -32,8 +35,10 @@ const FlexCard = ({
         src={src}
         alt={alt}
         layout="fill"
+        // objectFit="cover"
         placeholder="blur"
         blurDataURL={transformedUrl}
+        quality={25}
       />
 
       {/* Overlay */}
@@ -41,7 +46,7 @@ const FlexCard = ({
         className={`${active === id ? "flex" : "hidden"} ${classes.overlay}`}
       >
         <div className={classes.overlay_top}>
-          <Button>
+          <Button onClick={() => openModal({ src, w, h })}>
             <ArrowsExpandIcon className={classes.icon} />
           </Button>
         </div>

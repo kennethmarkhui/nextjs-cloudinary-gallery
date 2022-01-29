@@ -77,7 +77,7 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps() {
-  const { resources, next_cursor: nextCursor } = await getFiles(5);
+  const { resources, next_cursor: nextCursor } = await getFiles(20);
 
   return {
     props: {

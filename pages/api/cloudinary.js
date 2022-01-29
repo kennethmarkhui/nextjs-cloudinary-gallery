@@ -2,7 +2,7 @@ import { getFiles } from "../../lib/cloudinary";
 
 export default async function handler(req, res) {
   // console.log(req.query);
-  const maxResults = 5;
+  const maxResults = 20;
   const { search, nextCursor, order } = req.query;
 
   // GET '/'
