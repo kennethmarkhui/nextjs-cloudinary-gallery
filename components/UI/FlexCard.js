@@ -18,8 +18,8 @@ const FlexCard = ({
 }) => {
   return (
     <figure
-      onMouseEnter={() => setActiveFlexCard(id)}
-      onMouseLeave={() => setActiveFlexCard(null)}
+      onMouseOver={() => setActiveFlexCard(id)}
+      onMouseOut={() => setActiveFlexCard(null)}
       className={classes.flexcard}
       style={{
         flexGrow: style.flexGrow,
