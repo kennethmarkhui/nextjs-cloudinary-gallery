@@ -13,14 +13,10 @@ const Gallery = (props) => {
   console.log("Rendered Gallery");
   const { files, nextCursor, onLoadMore } = props;
 
-  const [active, setActive] = useState(null); // item.public_id
-
   const [modal, setModal] = useState({
     isOpen: false,
     content: { id: null, src: null, w: null, h: null },
   });
-
-  const handleSetActive = (id) => setActive(id);
 
   const handleOpenModal = ({ src, w, h }) => {
     setModal({ isOpen: true, content: { src, w, h } });
@@ -54,7 +50,6 @@ const Gallery = (props) => {
           return (
             <FlexCard
               key={item.public_id}
-              id={item.public_id}
               src={item.secure_url}
               alt={item.display_name}
               name={item.display_name}
@@ -62,8 +57,6 @@ const Gallery = (props) => {
               h={item.height}
               style={{ flexGrow, flexBasis, paddingBottom }}
               transformedUrl={generateBlurUrl(item.secure_url)}
-              setActiveFlexCard={handleSetActive}
-              active={active}
               openModal={handleOpenModal}
             />
           );

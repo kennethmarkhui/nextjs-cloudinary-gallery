@@ -1,10 +1,10 @@
+import { useState } from "react";
 import Image from "next/image";
 import { ArrowsExpandIcon } from "@heroicons/react/outline";
 import Button from "./Button";
 import classes from "./FlexCard.module.css";
 
 const FlexCard = ({
-  id,
   src,
   alt,
   name,
@@ -12,14 +12,14 @@ const FlexCard = ({
   h,
   style,
   transformedUrl,
-  setActiveFlexCard,
-  active,
   openModal,
 }) => {
+  const [active, setActive] = useState(false);
+
   return (
     <figure
-      onMouseOver={() => setActiveFlexCard(id)}
-      onMouseOut={() => setActiveFlexCard(null)}
+      onMouseOver={() => setActive(true)}
+      onMouseOut={() => setActive(false)}
       className={classes.flexcard}
       style={{
         flexGrow: style.flexGrow,
@@ -42,9 +42,7 @@ const FlexCard = ({
       />
 
       {/* Overlay */}
-      <div
-        className={`${active === id ? "flex" : "hidden"} ${classes.overlay}`}
-      >
+      <div className={`${active ? "flex" : "hidden"} ${classes.overlay}`}>
         <div className={classes.overlay_top}>
           <Button onClick={() => openModal({ src, w, h })}>
             <ArrowsExpandIcon className={classes.icon} />
