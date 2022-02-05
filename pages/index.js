@@ -1,7 +1,8 @@
-import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import Gallery from "../components/Gallery/Gallery";
+import { useRouter } from "next/router";
 import { getFiles } from "../lib/cloudinary";
+import useFetch from "../hooks/useFetch";
+import Gallery from "../components/Gallery/Gallery";
 import Spinner from "../components/UI/Spinner";
 
 export default function Home(props) {
@@ -11,7 +12,8 @@ export default function Home(props) {
 
   const [items, setItems] = useState(props.resources);
   const [nextCursor, setnextCursor] = useState(props.nextCursor);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const { isLoading, fetchData } = useFetch();
 
   // const renderCount = useRef(1);
   // useEffect(() => (renderCount.current = renderCount.current + 1));
@@ -25,25 +27,21 @@ export default function Home(props) {
     }
     if (!router.isReady || router.asPath !== router.pathname) {
       // console.log("home useEffect router !== '/'", router);
-      setIsLoading(true);
-      (async () => {
-        try {
-          const res = await fetch(
-            `/api/cloudinary${router.asPath.substring(1)}`
-          );
-          const data = await res.json();
-          setItems(data.resources);
-          setnextCursor(data.next_cursor);
-          setIsLoading(false);
-        } catch (error) {
-          console.log(error);
-        }
-      })();
-      return;
+      fetchData(`/api/cloudinary${router.asPath.substring(1)}`, (data) => {
+        setItems(data.resources);
+        setnextCursor(data.next_cursor);
+      });
     }
-  }, [router.isReady, router.asPath, router.pathname, props]);
+  }, [
+    router.isReady,
+    router.asPath,
+    router.pathname,
+    props.resources,
+    props.nextCursor,
+    fetchData,
+  ]);
 
-  const loadMoreHandler = async () => {
+  const loadMoreHandler = () => {
     console.log("loadMoreHandler ran");
     const newQuery = `${
       router.asPath !== "/"
@@ -51,14 +49,14 @@ export default function Home(props) {
         : `?nextCursor=${nextCursor}`
     }`;
 
-    try {
-      const res = await fetch(`/api/cloudinary${newQuery}`);
-      const data = await res.json();
-      setItems((prev) => [...prev, ...data.resources]);
-      setnextCursor(data.next_cursor);
-    } catch (error) {
-      console.log(error);
-    }
+    fetchData(
+      `/api/cloudinary${newQuery}`,
+      (data) => {
+        setItems((prev) => [...prev, ...data.resources]);
+        setnextCursor(data.next_cursor);
+      },
+      false
+    );
   };
 
   return (

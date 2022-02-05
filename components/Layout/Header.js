@@ -1,7 +1,6 @@
 import { useRef, useEffect } from "react";
 import Headroom from "headroom.js";
-import Logo from "../UI/Logo";
-import Search from "../UI/Search";
+import Navigation from "../Navigation/Navigation";
 
 import classes from "./Header.module.css";
 
@@ -19,14 +18,7 @@ const Header = () => {
   return (
     <header className={classes.header} ref={headerRef}>
       {/* <p>{`Header Rendered ${renderCount.current} times`}</p> */}
-      <div className={classes.links}>
-        <Logo />
-        <Logo />
-      </div>
-
-      <div className={classes.search_outer_div}>
-        <Search />
-      </div>
+      <Navigation />
     </header>
   );
 };

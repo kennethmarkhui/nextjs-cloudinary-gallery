@@ -1,0 +1,3 @@
+.nav {
+  @apply mx-auto max-w-7xl mb-4 flex flex-col px-6 sm:flex-row sm:h-32;
+}

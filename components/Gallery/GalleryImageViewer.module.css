@@ -1,0 +1,15 @@
+.image__viewer {
+  @apply relative w-full h-full;
+}
+
+.menu {
+  @apply absolute justify-end w-full z-40;
+}
+
+.icon {
+  @apply h-6 w-6;
+}
+
+.image {
+  @apply max-w-full max-h-full;
+}

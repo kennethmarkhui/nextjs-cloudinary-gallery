@@ -1,0 +1,6 @@
+.search {
+  @apply w-full mx-auto mt-2 mb-4 block sm:flex sm:justify-center sm:items-center sm:mx-0 sm:mb-0 sm:mt-0 sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:w-1/2 sm:h-full;
+}
+.wrapper {
+  @apply flex flex-row items-center justify-center;
+}

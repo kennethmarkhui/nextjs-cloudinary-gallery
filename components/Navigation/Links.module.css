@@ -1,0 +1,3 @@
+.links {
+  @apply w-full flex items-center justify-between h-14 sm:h-auto;
+}

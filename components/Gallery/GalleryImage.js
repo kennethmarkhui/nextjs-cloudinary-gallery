@@ -1,10 +1,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ArrowsExpandIcon } from "@heroicons/react/outline";
-import Button from "./Button";
-import classes from "./FlexCard.module.css";
+import Card from "../UI/Card";
+import Button from "../UI/Button";
+import classes from "./GalleryImage.module.css";
 
-const FlexCard = ({
+const GalleyImage = ({
   src,
   alt,
   name,
@@ -12,19 +13,16 @@ const FlexCard = ({
   h,
   style,
   transformedUrl,
-  openModal,
+  onOpenModal,
 }) => {
   const [active, setActive] = useState(false);
 
   return (
-    <figure
+    <Card
       onMouseOver={() => setActive(true)}
       onMouseOut={() => setActive(false)}
-      className={classes.flexcard}
-      style={{
-        flexGrow: style.flexGrow,
-        flexBasis: style.flexBasis,
-      }}
+      className={classes.card}
+      style={{ flexGrow: style.flexGrow, flexBasis: style.flexBasis }}
     >
       <i
         className={classes.i}
@@ -40,20 +38,21 @@ const FlexCard = ({
         blurDataURL={transformedUrl}
         quality={25}
       />
+      {/* <div className="w-full h-full"></div> */}
 
       {/* Overlay */}
       <div className={`${active ? "flex" : "hidden"} ${classes.overlay}`}>
-        <div className={classes.overlay_top}>
-          <Button onClick={() => openModal({ src, w, h })}>
+        <div className={classes.overlay__top}>
+          <Button onClick={() => onOpenModal({ src, w, h })}>
             <ArrowsExpandIcon className={classes.icon} />
           </Button>
         </div>
-        <div className={classes.overlay_bottom}>
-          <div className={classes.overlay_bottom_name}>{name}</div>
+        <div className={classes.overlay__bottom}>
+          <div className={classes.overlay__bottom__name}>{name}</div>
         </div>
       </div>
-    </figure>
+    </Card>
   );
 };
 
-export default FlexCard;
+export default GalleyImage;

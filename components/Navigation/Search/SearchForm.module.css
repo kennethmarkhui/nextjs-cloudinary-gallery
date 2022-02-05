@@ -1,7 +1,3 @@
-.search {
-  @apply flex flex-row items-center justify-center;
-}
-
 .form {
   @apply relative w-full flex border rounded-md;
 }

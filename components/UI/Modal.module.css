@@ -1,0 +1,11 @@
+.modal {
+  @apply absolute inset-0 bg-white overflow-auto;
+}
+
+.overlay {
+  @apply fixed inset-0 z-30;
+}
+
+.html__open {
+  @apply overflow-hidden;
+}

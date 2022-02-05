@@ -1,5 +1,5 @@
-.flexcard {
-  @apply m-1 relative rounded-lg overflow-hidden max-h-[50vh];
+.card {
+  @apply m-1.5 relative max-h-[50vh];
 }
 
 .i {
@@ -18,14 +18,14 @@
   @apply absolute bg-black text-white opacity-60 z-10 inset-0 w-full h-full flex-col justify-between;
 }
 
-.overlay_top {
+.overlay__top {
   @apply flex justify-end pt-2;
 }
 
-.overlay_bottom {
+.overlay__bottom {
   @apply block;
 }
 
-.overlay_bottom_name {
+.overlay__bottom__name {
   @apply m-1 px-2;
 }

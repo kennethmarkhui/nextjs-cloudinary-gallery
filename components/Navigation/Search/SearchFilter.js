@@ -1,11 +1,12 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import {
   SortAscendingIcon,
   SortDescendingIcon,
 } from "@heroicons/react/outline";
-import Button from "./Button";
-import classes from "./Filter.module.css";
+import Button from "../../UI/Button";
+
+import classes from "./SearchFilter.module.css";
 
 const Filter = () => {
   console.log("Rendered Filter");

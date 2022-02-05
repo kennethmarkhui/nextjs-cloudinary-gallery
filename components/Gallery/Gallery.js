@@ -1,9 +1,11 @@
 import { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Spinner from "../UI/Spinner";
-import FlexCard from "../UI/FlexCard";
+import GalleyImage from "./GalleryImage";
 import Modal from "../UI/Modal";
+import GalleryImageViewer from "./GalleryImageViewer";
 // import { useEffect, useRef } from "react";
+import classes from "./Gallery.module.css";
 
 // https://github.com/xieranmaya/blog/issues/6
 // https://codepen.io/jasonsturges/pen/pRdemq
@@ -15,16 +17,17 @@ const Gallery = (props) => {
 
   const [modal, setModal] = useState({
     isOpen: false,
-    content: { id: null, src: null, w: null, h: null },
+    data: { src: null, w: null, h: null },
   });
 
   const handleOpenModal = ({ src, w, h }) => {
-    setModal({ isOpen: true, content: { src, w, h } });
+    setModal({ isOpen: true, data: { src, w, h } });
   };
   const handleCloseModal = () => setModal({ isOpen: false });
 
   const generateBlurUrl = (url) => {
-    const transformations = "e_blur:2000,q_1";
+    const transformations = "c_scale,e_blur:2000,f_webp,q_1,w_200";
+
     const blurUrl = url.split("/");
     blurUrl.splice(6, 0, transformations);
     return blurUrl.join("/");
@@ -33,12 +36,12 @@ const Gallery = (props) => {
   return (
     <>
       <InfiniteScroll
-        className="flex flex-wrap items-center justify-center after:content-[''] after:grow-[999999999]"
+        className={classes.gallery}
         dataLength={files.length}
         next={onLoadMore}
         hasMore={!!nextCursor}
         scrollThreshold={0.9}
-        loader={<Spinner className="h-6 w-6" />}
+        loader={<Spinner className={classes.icon} />}
         endMessage={<p>Yay! You have seen it all</p>}
       >
         {/* <p>{`Gallery Rendered ${renderCount.current} times`}</p> */}
@@ -48,7 +51,7 @@ const Gallery = (props) => {
           const paddingBottom = Math.round((item.height / item.width) * 100.0);
 
           return (
-            <FlexCard
+            <GalleyImage
               key={item.public_id}
               src={item.secure_url}
               alt={item.display_name}
@@ -57,13 +60,20 @@ const Gallery = (props) => {
               h={item.height}
               style={{ flexGrow, flexBasis, paddingBottom }}
               transformedUrl={generateBlurUrl(item.secure_url)}
-              openModal={handleOpenModal}
+              onOpenModal={handleOpenModal}
             />
           );
         })}
       </InfiniteScroll>
 
-      <Modal modal={modal} onCloseModal={handleCloseModal} />
+      {modal.isOpen && (
+        <Modal isOpen={modal.isOpen} onCloseModal={handleCloseModal}>
+          <GalleryImageViewer
+            src={modal.data.src}
+            onCloseModal={handleCloseModal}
+          />
+        </Modal>
+      )}
     </>
   );
 };

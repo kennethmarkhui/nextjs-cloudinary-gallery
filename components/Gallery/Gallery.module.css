@@ -1,0 +1,7 @@
+.gallery {
+  @apply flex flex-wrap items-center justify-center after:content-[''] after:grow-[999999999];
+}
+
+.icon {
+  @apply h-6 w-6;
+}
