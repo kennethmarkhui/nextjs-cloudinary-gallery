@@ -25,14 +25,6 @@ const Gallery = (props) => {
   };
   const handleCloseModal = () => setModal({ isOpen: false });
 
-  const generateBlurUrl = (url) => {
-    const transformations = "c_scale,e_blur:2000,f_webp,q_1,w_200";
-
-    const blurUrl = url.split("/");
-    blurUrl.splice(6, 0, transformations);
-    return blurUrl.join("/");
-  };
-
   return (
     <>
       <InfiniteScroll
@@ -52,14 +44,14 @@ const Gallery = (props) => {
 
           return (
             <GalleyImage
-              key={item.public_id}
-              src={item.secure_url}
-              alt={item.display_name}
-              name={item.display_name}
+              key={item.id}
+              src={item.url}
+              alt={item.name}
+              name={item.name}
               w={item.width}
               h={item.height}
               style={{ flexGrow, flexBasis, paddingBottom }}
-              transformedUrl={generateBlurUrl(item.secure_url)}
+              lqip={item.lqipBase64}
               onOpenModal={handleOpenModal}
             />
           );

@@ -5,16 +5,7 @@ import Card from "../UI/Card";
 import Button from "../UI/Button";
 import classes from "./GalleryImage.module.css";
 
-const GalleyImage = ({
-  src,
-  alt,
-  name,
-  w,
-  h,
-  style,
-  transformedUrl,
-  onOpenModal,
-}) => {
+const GalleyImage = ({ src, alt, name, w, h, style, lqip, onOpenModal }) => {
   const [active, setActive] = useState(false);
 
   return (
@@ -35,7 +26,7 @@ const GalleyImage = ({
         layout="fill"
         // objectFit="cover"
         placeholder="blur"
-        blurDataURL={transformedUrl}
+        blurDataURL={lqip}
         quality={25}
       />
       {/* <div className="w-full h-full"></div> */}
