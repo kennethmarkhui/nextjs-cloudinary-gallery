@@ -10,8 +10,12 @@ export default function Home(props) {
 
   const router = useRouter();
 
-  const [items, setItems] = useState(props.resources);
-  const [nextCursor, setnextCursor] = useState(props.nextCursor);
+  const [items, setItems] = useState(
+    router.asPath !== router.pathname ? [] : props.resources
+  );
+  const [nextCursor, setnextCursor] = useState(
+    router.asPath !== router.pathname ? null : props.nextCursor
+  );
 
   const { isLoading, fetchData } = useFetch();
 
@@ -63,7 +67,7 @@ export default function Home(props) {
     <>
       {/* <p>{`Home Rendered ${renderCount.current} times`}</p> */}
       {isLoading && <Spinner className="h-6 w-6" />}
-      {!isLoading && (
+      {!isLoading && items.length !== 0 && (
         <Gallery
           files={items}
           nextCursor={nextCursor}

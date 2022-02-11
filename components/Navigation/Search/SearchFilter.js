@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   SortAscendingIcon,
@@ -12,11 +11,7 @@ const Filter = () => {
   console.log("Rendered Filter");
   const router = useRouter();
 
-  const [orderByToggle, setOrderByToggle] = useState(!!router.query.order);
-
-  useEffect(() => {
-    setOrderByToggle(router.query.order);
-  }, [router.query.order]);
+  const isAscending = !!router.query.order;
 
   const handleClick = () => {
     let newQuery;
@@ -32,7 +27,7 @@ const Filter = () => {
 
   return (
     <Button onClick={handleClick}>
-      {!orderByToggle ? (
+      {!isAscending ? (
         <SortAscendingIcon className={classes.icon} />
       ) : (
         <SortDescendingIcon className={classes.icon} />

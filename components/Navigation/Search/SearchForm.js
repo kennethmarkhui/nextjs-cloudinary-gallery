@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { SearchIcon } from "@heroicons/react/outline";
 import Button from "../../UI/Button";
@@ -8,14 +8,9 @@ import classes from "./SearchForm.module.css";
 const Search = () => {
   console.log("Rendered Search");
 
-  const [query, setQuery] = useState("");
-
   const router = useRouter();
 
-  useEffect(() => {
-    console.log("Search useeffect ran");
-    setQuery(router.query.search);
-  }, [router.query.search]);
+  const [query, setQuery] = useState(router.query.search || "");
 
   const handleSubmit = (e) => {
     e.preventDefault();
