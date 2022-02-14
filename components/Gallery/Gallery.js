@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Spinner from "../UI/Spinner";
 import GalleyImage from "./GalleryImage";
-import Modal from "../UI/Modal";
 import GalleryImageViewer from "./GalleryImageViewer";
 // import { useEffect, useRef } from "react";
 import classes from "./Gallery.module.css";
@@ -12,18 +11,19 @@ import classes from "./Gallery.module.css";
 const Gallery = (props) => {
   // const renderCount = useRef(1);
   // useEffect(() => (renderCount.current = renderCount.current + 1));
-  console.log("Rendered Gallery");
+  // console.log("Rendered Gallery");
   const { files, nextCursor, onLoadMore } = props;
 
   const [modal, setModal] = useState({
     isOpen: false,
-    data: { src: null, w: null, h: null },
+    src: null,
   });
 
-  const handleOpenModal = ({ src, w, h }) => {
-    setModal({ isOpen: true, data: { src, w, h } });
+  const handleOpenModal = ({ src }) => {
+    setModal({ isOpen: true, src: src });
   };
-  const handleCloseModal = () => setModal({ isOpen: false });
+
+  const handleCloseModal = useCallback(() => setModal({ isOpen: false }), []);
 
   return (
     <>
@@ -59,12 +59,7 @@ const Gallery = (props) => {
       </InfiniteScroll>
 
       {modal.isOpen && (
-        <Modal isOpen={modal.isOpen} onCloseModal={handleCloseModal}>
-          <GalleryImageViewer
-            src={modal.data.src}
-            onCloseModal={handleCloseModal}
-          />
-        </Modal>
+        <GalleryImageViewer src={modal.src} onHidden={handleCloseModal} />
       )}
     </>
   );

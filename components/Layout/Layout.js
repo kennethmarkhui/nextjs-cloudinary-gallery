@@ -3,7 +3,7 @@ import Main from "./Main";
 import classes from "./Layout.module.css";
 
 const Layout = (props) => {
-  console.log("Rendered Layout");
+  // console.log("Rendered Layout");
   return (
     <div className={classes.layout}>
       <Header />

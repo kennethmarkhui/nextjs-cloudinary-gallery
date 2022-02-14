@@ -1,33 +1,38 @@
-import { useState } from "react";
-import Image from "next/image";
-import { XIcon } from "@heroicons/react/solid";
-import Button from "../UI/Button";
+import { useEffect, useRef } from "react";
+import Viewer from "viewerjs";
+import "viewerjs/dist/viewer.min.css";
 
 import classes from "./GalleryImageViewer.module.css";
 
-const GalleryImageViewer = ({ onCloseModal, src }) => {
-  const [showMenu, setShowMenu] = useState(true);
+// https://github.com/fengyuanchen/viewerjs
+const GalleryImageViewer = ({ src, onHidden }) => {
+  const imgWrapperRef = useRef();
 
-  // TODO implement setTimeout onMouseMove
+  useEffect(() => {
+    const viewer = new Viewer(imgWrapperRef.current, {
+      toolbar: {
+        rotateLeft: true,
+        zoomOut: true,
+        zoomIn: true,
+        rotateRight: true,
+      },
+      navbar: false,
+      keyboard: false,
+      focus: false,
+      slideOnTouch: false,
+      minZoomRatio: 0.1,
+      maxZoomRatio: 1,
+      hidden: () => onHidden(),
+    });
+
+    viewer.show();
+
+    return () => viewer.destroy();
+  }, [onHidden]);
 
   return (
-    <div className={classes.image__viewer}>
-      <div className={`${showMenu ? "flex" : "hidden"} ${classes.menu}`}>
-        <Button onClick={onCloseModal}>
-          <XIcon className={classes.icon} />
-        </Button>
-      </div>
-      <Image
-        className={classes.image}
-        src={src}
-        alt=""
-        layout="fill"
-        objectFit="contain"
-        quality={100}
-        // width={modal.data.w}
-        // height={modal.data.h}
-      />
-      {/* <div className="bg-slate-600 w-full h-full"></div> */}
+    <div ref={imgWrapperRef} className={classes.img__wrapper}>
+      <img src={src} alt="" />
     </div>
   );
 };

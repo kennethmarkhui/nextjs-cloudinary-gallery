@@ -46,7 +46,7 @@ export default function Home(props) {
   ]);
 
   const loadMoreHandler = () => {
-    console.log("loadMoreHandler ran");
+    // console.log("loadMoreHandler ran");
     const newQuery = `${
       router.asPath !== "/"
         ? `${router.asPath.substring(1)}&nextCursor=${nextCursor}`
@@ -78,7 +78,7 @@ export default function Home(props) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const { resources, next_cursor: nextCursor } = await getFiles(20);
 
   return {

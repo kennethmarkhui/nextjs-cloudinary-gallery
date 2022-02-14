@@ -8,7 +8,7 @@ const Header = () => {
   const headerRef = useRef();
 
   useEffect(() => {
-    console.log("headroom");
+    // console.log("headroom");
     const headroom = new Headroom(headerRef.current);
     headroom.init();
   }, []);

@@ -8,7 +8,7 @@ import Button from "../../UI/Button";
 import classes from "./SearchFilter.module.css";
 
 const Filter = () => {
-  console.log("Rendered Filter");
+  // console.log("Rendered Filter");
   const router = useRouter();
 
   const isAscending = !!router.query.order;

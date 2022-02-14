@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   const { search, nextCursor, order } = req.query;
 
   // GET '/'
-  console.log("api");
+  // console.log("api");
   let result;
   try {
     result = await getFiles(maxResults, nextCursor, search, order);

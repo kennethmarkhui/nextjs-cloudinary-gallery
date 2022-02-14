@@ -6,7 +6,7 @@ import Button from "../../UI/Button";
 import classes from "./SearchForm.module.css";
 
 const Search = () => {
-  console.log("Rendered Search");
+  // console.log("Rendered Search");
 
   const router = useRouter();
 
