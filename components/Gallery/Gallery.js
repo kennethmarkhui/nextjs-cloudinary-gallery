@@ -19,7 +19,7 @@ const Gallery = (props) => {
     src: null,
   });
 
-  const handleOpenModal = ({ src }) => {
+  const handleOpenModal = (src) => {
     setModal({ isOpen: true, src: src });
   };
 
@@ -45,11 +45,12 @@ const Gallery = (props) => {
           return (
             <GalleyImage
               key={item.id}
-              src={item.url}
+              src={item.thumbnailUrl}
               alt={item.name}
+              url={item.url}
               name={item.name}
-              w={item.width}
-              h={item.height}
+              // w={item.width}
+              // h={item.height}
               style={{ flexGrow, flexBasis, paddingBottom }}
               lqip={item.lqipBase64}
               onOpenModal={handleOpenModal}

@@ -5,7 +5,17 @@ import Card from "../UI/Card";
 import Button from "../UI/Button";
 import classes from "./GalleryImage.module.css";
 
-const GalleyImage = ({ src, alt, name, w, h, style, lqip, onOpenModal }) => {
+const GalleyImage = ({
+  src,
+  alt,
+  url,
+  name,
+  // w,
+  // h,
+  style,
+  lqip,
+  onOpenModal,
+}) => {
   const [active, setActive] = useState(false);
 
   return (
@@ -20,6 +30,7 @@ const GalleyImage = ({ src, alt, name, w, h, style, lqip, onOpenModal }) => {
         style={{ paddingBottom: `${style.paddingBottom}%` }}
       />
       <Image
+        unoptimized // enable to opt out of vercel image optimization usage in favor of 3rd party image provider(e.g.: cloudinary)
         className={classes.img}
         src={src}
         alt={alt}
@@ -34,7 +45,7 @@ const GalleyImage = ({ src, alt, name, w, h, style, lqip, onOpenModal }) => {
       {/* Overlay */}
       <div className={`${active ? "flex" : "hidden"} ${classes.overlay}`}>
         <div className={classes.overlay__top}>
-          <Button onClick={() => onOpenModal({ src, w, h })}>
+          <Button onClick={() => onOpenModal(url)}>
             <ArrowsExpandIcon className={classes.icon} />
           </Button>
         </div>
