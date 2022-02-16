@@ -3,15 +3,11 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Spinner from "../UI/Spinner";
 import GalleyImage from "./GalleryImage";
 import GalleryImageViewer from "./GalleryImageViewer";
-// import { useEffect, useRef } from "react";
 import classes from "./Gallery.module.css";
 
 // https://github.com/xieranmaya/blog/issues/6
 // https://codepen.io/jasonsturges/pen/pRdemq
 const Gallery = (props) => {
-  // const renderCount = useRef(1);
-  // useEffect(() => (renderCount.current = renderCount.current + 1));
-  // console.log("Rendered Gallery");
   const { files, nextCursor, onLoadMore } = props;
 
   const [modal, setModal] = useState({
@@ -36,7 +32,6 @@ const Gallery = (props) => {
         loader={<Spinner className={classes.icon} />}
         endMessage={<p>Yay! You have seen it all</p>}
       >
-        {/* <p>{`Gallery Rendered ${renderCount.current} times`}</p> */}
         {files.map((item) => {
           const flexGrow = Math.round((item.width * 100) / item.height);
           const flexBasis = Math.round((item.width * 300) / item.height);

@@ -40,7 +40,6 @@ const GalleyImage = ({
         blurDataURL={lqip}
         quality={25}
       />
-      {/* <div className="w-full h-full"></div> */}
 
       {/* Overlay */}
       <div className={`${active ? "flex" : "hidden"} ${classes.overlay}`}>

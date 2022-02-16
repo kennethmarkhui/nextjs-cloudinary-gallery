@@ -1,12 +1,10 @@
 import { getFiles } from "../../lib/cloudinary";
 
 export default async function handler(req, res) {
-  // console.log(req.query);
   const maxResults = 20;
   const { search, nextCursor, order } = req.query;
 
   // GET '/'
-  // console.log("api");
   let result;
   try {
     result = await getFiles(maxResults, nextCursor, search, order);

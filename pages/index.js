@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getFiles } from "../lib/cloudinary";
 import useFetch from "../hooks/useFetch";
@@ -6,8 +6,6 @@ import Gallery from "../components/Gallery/Gallery";
 import Spinner from "../components/UI/Spinner";
 
 export default function Home(props) {
-  // console.log(props);
-
   const router = useRouter();
 
   const [items, setItems] = useState(
@@ -19,18 +17,13 @@ export default function Home(props) {
 
   const { isLoading, fetchData } = useFetch();
 
-  // const renderCount = useRef(1);
-  // useEffect(() => (renderCount.current = renderCount.current + 1));
-
   useEffect(() => {
     if (!router.isReady || router.asPath === router.pathname) {
-      // console.log("home useEffect router === '/'", router);
       setItems(props.resources);
       setnextCursor(props.nextCursor);
       return;
     }
     if (!router.isReady || router.asPath !== router.pathname) {
-      // console.log("home useEffect router !== '/'", router);
       fetchData(`/api/cloudinary${router.asPath.substring(1)}`, (data) => {
         setItems(data.resources);
         setnextCursor(data.next_cursor);
@@ -46,7 +39,6 @@ export default function Home(props) {
   ]);
 
   const loadMoreHandler = () => {
-    // console.log("loadMoreHandler ran");
     const newQuery = `${
       router.asPath !== "/"
         ? `${router.asPath.substring(1)}&nextCursor=${nextCursor}`
@@ -65,7 +57,6 @@ export default function Home(props) {
 
   return (
     <>
-      {/* <p>{`Home Rendered ${renderCount.current} times`}</p> */}
       {isLoading && <Spinner className="h-6 w-6" />}
       {!isLoading && items.length !== 0 && (
         <Gallery
