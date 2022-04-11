@@ -17,6 +17,7 @@ const GalleyImage = ({
   onOpenModal,
 }) => {
   const [active, setActive] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <Card
@@ -31,7 +32,7 @@ const GalleyImage = ({
       />
       <Image
         unoptimized // enable to opt out of vercel image optimization usage in favor of 3rd party image provider(e.g.: cloudinary)
-        className={classes.img}
+        className={`${classes.img} ${!isLoading && classes.img__loaded}`} // https://github.com/leerob/image-gallery-supabase-tailwind-nextjs
         src={src}
         alt={alt}
         layout="fill"
@@ -39,6 +40,7 @@ const GalleyImage = ({
         placeholder="blur"
         blurDataURL={lqip}
         quality={25}
+        onLoadingComplete={() => setIsLoading(false)}
       />
 
       {/* Overlay */}

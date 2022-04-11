@@ -1,5 +1,6 @@
 .card {
-  @apply m-1.5 relative max-h-[50vh];
+  @apply m-1.5 relative;
+  /* max-h-[50vh] */
 }
 
 .i {
@@ -7,7 +8,11 @@
 }
 
 .img {
-  @apply absolute top-0 w-full align-bottom;
+  @apply absolute top-0 w-full align-bottom duration-700 ease-in-out scale-110 blur-2xl grayscale;
+}
+
+.img__loaded {
+  @apply scale-100 blur-0 grayscale-0;
 }
 
 .icon {
