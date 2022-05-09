@@ -20,7 +20,7 @@
 }
 
 .overlay {
-  @apply absolute bg-gradient-to-b from-black via-transparent to-black opacity-60 text-white z-10 inset-0 w-full h-full flex-col justify-between;
+  @apply absolute bg-gradient-to-b from-black/25 via-transparent to-black/25 text-white z-10 inset-0 w-full h-full flex-col justify-between;
 }
 
 .overlay__top {
