@@ -20,15 +20,15 @@
 }
 
 .overlay {
-  @apply absolute bg-gradient-to-b from-black/25 via-transparent to-black/25 text-white z-10 inset-0 w-full h-full flex-col justify-between;
+  @apply absolute text-white inset-0 w-full h-full flex-col justify-between;
 }
 
 .overlay__top {
-  @apply flex justify-end pt-2;
+  @apply flex justify-end pt-2 bg-gradient-to-b from-black/25 to-transparent;
 }
 
 .overlay__bottom {
-  @apply block;
+  @apply block bg-gradient-to-b from-transparent to-black/25;
 }
 
 .overlay__bottom__name {
