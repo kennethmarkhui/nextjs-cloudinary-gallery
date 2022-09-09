@@ -6,7 +6,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <Layout>
       <Head>
-        <title>Hui, Chingye Gallery</title>
+        <title>{process.env.NEXT_PUBLIC_TITLE}</title>
         <meta name="description" content="Collection of images" />
       </Head>
       <Component {...pageProps} />

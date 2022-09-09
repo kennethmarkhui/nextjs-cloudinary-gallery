@@ -7,7 +7,7 @@ const Links = () => {
   return (
     <div className={classes.links}>
       <Logo title="Gallery" />
-      <Avatar src="/avatar.webp" url="https://huichingye.netlify.app" />
+      <Avatar src="/avatar.svg" url={process.env.NEXT_PUBLIC_EXTERNAL_URL} />
     </div>
   );
 };
